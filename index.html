@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;}
+html,body{height:100%;overflow:hidden;}
+body{display:flex;background:#fff;color:#111;}
+#col1{width:26%;overflow-y:auto;padding:16px 14px;background:#f9f9f9;border-right:1px solid #e8e8e8;flex-shrink:0;}
+#col2{width:46%;overflow-y:auto;padding:16px 14px;border-right:1px solid #e8e8e8;flex-shrink:0;}
+#col3{width:28%;overflow-y:auto;padding:16px 14px;background:#f9f9f9;flex-shrink:0;}
+.col-title{font-size:9px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #eee;}
+.sec{font-size:9px;font-weight:700;color:#ccc;text-transform:uppercase;letter-spacing:.08em;margin:12px 0 7px;}
+.divider{height:1px;background:#eee;margin:10px 0;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;}
+.field{background:#fff;border:1px solid #e8e8e8;border-radius:7px;padding:8px 10px;}
+.field:focus-within{border-color:#ccc;}
+.flabel{font-size:9px;color:#aaa;margin-bottom:4px;display:flex;align-items:center;gap:3px;}
+.badge{font-size:8px;background:#e8f0fe;color:#1a56db;padding:1px 4px;border-radius:3px;}
+.finput{display:flex;align-items:baseline;gap:2px;}
+.finput input{width:100%;font-size:16px;font-weight:600;border:none;background:transparent;color:#111;outline:none;}
+.funit{font-size:10px;color:#aaa;}
+input[type=url]{width:100%;padding:8px 10px;border:1px solid #e5e5e5;border-radius:7px;font-size:12px;margin-bottom:7px;background:#fff;}
+input[type=url]:focus{outline:none;border-color:#aaa;}
+.btn-red{width:100%;background:#CC3333;color:#fff;border:none;padding:9px;border-radius:7px;font-size:12px;cursor:pointer;font-weight:600;}
+.btn-red:hover{background:#aa2222;}
+.btn-dark{width:100%;background:#111;color:#fff;border:none;padding:9px;border-radius:7px;font-size:12px;cursor:pointer;font-weight:600;margin-top:10px;}
+.btn-dark:hover{background:#333;}
+.fee-row{display:flex;align-items:center;justify-content:space-between;margin:10px 0;font-size:10px;color:#999;}
+.fee-tag{background:#fff8e1;color:#8a6000;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;}
+.toggle-row{display:flex;border:1px solid #e5e5e5;border-radius:6px;overflow:hidden;margin-top:4px;}
+.tog{flex:1;padding:6px;text-align:center;font-size:10px;cursor:pointer;background:#fff;color:#888;border:none;}
+.tog.sel{background:#111;color:#fff;font-weight:600;}
+.co-card{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;background:#fff;border:1px solid #e8e8e8;border-radius:8px;margin-top:8px;}
+.co-init{width:28px;height:28px;border-radius:6px;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1a56db;flex-shrink:0;}
+.co-name{font-size:12px;font-weight:600;}
+.co-pitch{font-size:10px;color:#888;margin-top:2px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.co-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.tag{font-size:9px;color:#777;background:#efefef;padding:1px 5px;border-radius:3px;}
+.err{color:#c0392b;font-size:10px;margin:4px 0;}
+.loading-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#999;margin-bottom:6px;}
+.spinner{width:11px;height:11px;border:2px solid #eee;border-top-color:#CC3333;border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* Col2 */
+.tl{display:flex;border-radius:7px;border:1px solid #e8e8e8;overflow:hidden;margin-bottom:10px;}
+.tls{flex:1;padding:6px 3px;text-align:center;}
+.tlsep{width:1px;background:#e8e8e8;flex-shrink:0;}
+.tlnum{font-size:10px;font-weight:700;}
+.tlsub{font-size:9px;color:#aaa;margin-top:1px;}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.hcard{border-radius:9px;padding:12px;}
+.hlbl{font-size:10px;margin-bottom:3px;}
+.hnum{font-size:22px;font-weight:700;}
+.hsub{font-size:10px;margin-top:2px;}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.stat{background:#f7f7f7;border-radius:7px;padding:9px 6px;text-align:center;}
+.sv{font-size:13px;font-weight:700;}
+.sl{font-size:9px;color:#888;margin-top:2px;}
+.snap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.snap{border-radius:7px;padding:9px;}
+.snap-mo{font-size:10px;font-weight:700;margin-bottom:7px;}
+.br{margin-bottom:5px;}
+.blbl{display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px;}
+.btrack{height:4px;border-radius:2px;background:#e5e5e5;}
+.bfill{height:100%;border-radius:2px;}
+.snet{border-top:1px solid rgba(0,0,0,0.06);padding-top:6px;display:flex;justify-content:space-between;font-size:10px;margin-top:6px;}
+.spct{text-align:right;font-size:9px;margin-top:2px;}
+.warn{border-radius:7px;padding:8px 12px;margin-bottom:10px;font-size:10px;line-height:1.6;}
+.sec-lbl{font-size:9px;font-weight:700;color:#ccc;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.chart-wrap{position:relative;height:150px;margin-bottom:10px;}
+.bchart-wrap{position:relative;height:90px;margin-bottom:4px;}
+/* Col3 */
+.kpi-card{background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:12px;margin-bottom:10px;}
+.kpi-title{font-size:9px;font-weight:700;color:#ccc;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.kpi-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f5f5f5;}
+.kpi-row:last-child{border:none;}
+.kpi-label{font-size:11px;color:#888;}
+.kpi-val{font-size:12px;font-weight:700;}
+.narr-card{background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:14px;border-left:3px solid #CC3333;}
+.narr-title{font-size:9px;font-weight:700;color:#CC3333;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.narr-text{font-size:12px;line-height:1.85;color:#333;}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:55vh;color:#ddd;text-align:center;}
+.empty-state p{font-size:11px;margin-top:8px;line-height:1.6;color:#ccc;}
+.spot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.spot-cell{background:rgba(255,255,255,0.7);border-radius:6px;padding:7px;text-align:center;}
+.spot-val{font-size:13px;font-weight:700;}
+.spot-lbl{font-size:9px;color:#aaa;margin-top:2px;}
+</style>
+</head>
+<body>
+
+<!-- COL 1: Company -->
+<div id="col1">
+  <div class="col-title">Company</div>
+
+  <input type="url" id="urlIn" placeholder="https://company.com" />
+  <div class="err" id="urlErr" style="display:none;"></div>
+  <div class="loading-row" id="loadRow" style="display:none;"><div class="spinner"></div><span id="loadTxt">Identifying...</span></div>
+  <button class="btn-red" onclick="doAnalyze()">Analyze company →</button>
+  <div id="coCard" style="display:none;"></div>
+
+  <div class="divider"></div>
+  <div class="sec">Core metrics</div>
+  <div class="grid2">
+    <div class="field"><div class="flabel">MRR/client <span class="badge">AI</span></div><div class="finput"><span class="funit">$</span><input type="number" id="fMrr" oninput="scheduleCalc()"></div></div>
+    <div class="field"><div class="flabel">Retention <span class="badge">AI</span></div><div class="finput"><input type="number" id="fRet" oninput="scheduleCalc()"><span class="funit">mo</span></div></div>
+    <div class="field"><div class="flabel">Conversion <span class="badge">AI</span></div><div class="finput"><input type="number" id="fConv" oninput="scheduleCalc()"><span class="funit">%</span></div></div>
+    <div class="field"><div class="flabel">Sales cycle <span class="badge">AI</span></div><div class="finput"><input type="number" id="fSc" oninput="scheduleCalc()"><span class="funit">wk</span></div></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec">Contract</div>
+  <div class="field">
+    <div class="flabel">Contract type</div>
+    <div class="toggle-row">
+      <button class="tog sel" id="tMo" onclick="setContract('monthly')">Monthly MRR</button>
+      <button class="tog" id="tAn" onclick="setContract('annual')">Annual upfront</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec">Simulate month</div>
+  <div class="field">
+    <div class="flabel">Month <span id="mLabel" style="color:#111;font-weight:700;font-size:11px;margin-left:2px;">3</span></div>
+    <input type="range" id="fMonth" min="3" max="24" value="3" step="1" oninput="onMonthSlide()" style="width:100%;margin-top:6px;">
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:#ccc;margin-top:3px;"><span>M3</span><span>M12</span><span>M24</span></div>
+  </div>
+
+  <div class="fee-row"><span>Monthly fee · flat · no setup</span><span class="fee-tag">$3,400</span></div>
+  <button class="btn-dark" onclick="doCalc()">Calculate ROI →</button>
+</div>
+
+<!-- COL 2: ROI Calculation -->
+<div id="col2">
+  <div class="col-title">ROI calculation</div>
+  <div id="empty2" class="empty-state"><div style="font-size:28px">📊</div><p>Enter a company URL<br>and analyze to begin.</p></div>
+  <div id="results" style="display:none;"></div>
+</div>
+
+<!-- COL 3: ROI Summary -->
+<div id="col3">
+  <div class="col-title">ROI summary</div>
+  <div id="empty3" class="empty-state"><div style="font-size:28px">✍️</div><p>Auto-generates after<br>calculation.</p></div>
+  <div id="summaryBox" style="display:none;"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const FEE = 3400, LEADS = 10;
+let revChart = null, leadsChart = null, contractType = 'monthly';
+let calcTimer = null, loadTimer = null, lastPts = [], lastFc = 2;
+
+function ge(id) { return document.getElementById(id); }
+function fmt(n) { return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n); }
+function fmtK(v) { return v >= 1000 ? '$' + Math.round(v/1000) + 'k' : '$' + Math.round(v); }
+function pc(v) { return v >= 0 ? '#1D9E75' : '#E24B4A'; }
+
+function setContract(t) {
+  contractType = t;
+  ge('tMo').className = 'tog' + (t === 'monthly' ? ' sel' : '');
+  ge('tAn').className = 'tog' + (t === 'annual' ? ' sel' : '');
+  scheduleCalc();
+}
+
+function scheduleCalc() {
+  clearTimeout(calcTimer);
+  calcTimer = setTimeout(() => { if (ge('fMrr').value) doCalc(); }, 600);
+}
+
+function onMonthSlide() {
+  const m = parseInt(ge('fMonth').value) || 3;
+  ge('mLabel').textContent = m;
+  if (lastPts.length) renderSpotlight(lastPts, m, lastFc);
+}
+
+function buildPts(mrr, ret, conv, sc, annual) {
+  const fc = Math.ceil(1 + sc / 4.33);
+  const bCPM = LEADS * (conv / 100);
+  const cr = 0.02; // 2% default churn
+  let coh = [], cumRev = 0, cumCost = 0, be = null, tClosed = 0;
+  const pts = [];
+  for (let m = 1; m <= 24; m++) {
+    const nC = m >= fc ? bCPM : 0;
+    tClosed += nC;
+    if (nC > 0) coh.push({ n: nC, a: 0 });
+    let mR = 0;
+    coh = coh.map(c => {
+      c.a++; c.n *= (1 - cr);
+      if (c.n < 0.001 || c.a > ret) return null;
+      if (annual) { if (c.a === 1 || c.a % 12 === 1) mR += c.n * mrr * 12; }
+      else mR += c.n * mrr;
+      return c;
+    }).filter(Boolean);
+    cumRev += mR; cumCost += FEE;
+    if (cumRev >= cumCost && !be) be = m;
+    const act = coh.reduce((s, c) => s + c.n, 0);
+    pts.push({
+      m, label: 'M' + m,
+      rev: Math.round(cumRev), cost: Math.round(cumCost),
+      net: Math.round(cumRev - cumCost),
+      leads: m < 2 ? 0 : (m - 1) * LEADS,
+      monthRev: Math.round(mR),
+      newClients: Math.round(nC * 10) / 10,
+      activeClients: Math.round(act * 10) / 10
+    });
+  }
+  const eCAC = tClosed > 0.1 ? Math.round((FEE * 24) / tClosed) : null;
+  return { pts, be, fc, bCPM, eCAC, tClosed: Math.round(tClosed) };
+}
+
+const LOAD_MSGS = ['Identifying company...', 'Pulling benchmarks...', 'Estimating deal sizes...', 'Building profile...'];
+
+async function doAnalyze() {
+  const url = ge('urlIn').value.trim();
+  if (!url) { ge('urlErr').textContent = 'Please enter a URL.'; ge('urlErr').style.display = 'block'; return; }
+  ge('urlErr').style.display = 'none';
+  ge('loadRow').style.display = 'flex';
+  ge('coCard').style.display = 'none';
+  let i = 0; ge('loadTxt').textContent = LOAD_MSGS[0];
+  loadTimer = setInterval(() => { i = (i + 1) % LOAD_MSGS.length; ge('loadTxt').textContent = LOAD_MSGS[i]; }, 1800);
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 600,
+        system: 'Return ONLY valid JSON, no markdown, no explanation: {"companyName":"string","pitch":"max 12 words","industry":"string","sizeEstimate":"string","benchmarks":{"avgMRRPerClient":number,"avgRetentionMonths":number,"leadConversionPct":number,"avgSalesCycleWeeks":number}}. Rules: leadConversionPct 10-20%, salesCycle 4-8wk mid-market.',
+        messages: [{ role: 'user', content: 'B2B mid-market benchmarks for: ' + url }]
+      })
+    });
+    clearInterval(loadTimer);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const raw = data.content.filter(b => b.type === 'text').map(b => b.text).join('').replace(/```json|```/g, '').trim();
+    const co = JSON.parse(raw);
+    const ini = co.companyName.split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    ge('coCard').innerHTML = `<div class="co-card">
+      <div class="co-init">${ini}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="co-name">${co.companyName}</div>
+        <div class="co-pitch">${co.pitch}</div>
+        <div class="co-tags"><span class="tag">${co.industry}</span><span class="tag">${co.sizeEstimate}</span></div>
+      </div></div>`;
+    ge('coCard').style.display = 'block';
+    const b = co.benchmarks;
+    ge('fMrr').value = b.avgMRRPerClient;
+    ge('fRet').value = b.avgRetentionMonths;
+    ge('fConv').value = b.leadConversionPct;
+    ge('fSc').value = b.avgSalesCycleWeeks;
+    doCalc();
+  } catch(e) {
+    clearInterval(loadTimer);
+    ge('urlErr').textContent = 'Error: ' + e.message;
+    ge('urlErr').style.display = 'block';
+  }
+  ge('loadRow').style.display = 'none';
+}
+
+function doCalc() {
+  const mrr  = parseFloat(ge('fMrr').value)  || 0; if (!mrr) return;
+  const ret  = parseFloat(ge('fRet').value)  || 12;
+  const conv = parseFloat(ge('fConv').value) || 15;
+  const sc   = parseFloat(ge('fSc').value)   || 6;
+  const annual = contractType === 'annual';
+  const { pts, be, fc, bCPM, eCAC, tClosed } = buildPts(mrr, ret, conv, sc, annual);
+  const n6 = pts[5].net, n12 = pts[11].net, n24 = pts[23].net, l24 = pts[23].leads;
+  const ltv = mrr * ret, plat = mrr * bCPM;
+  const snaps = [3, 6, 12].map(m => ({ m, ...pts[m - 1] }));
+
+  if (revChart) { revChart.destroy(); revChart = null; }
+  if (leadsChart) { leadsChart.destroy(); leadsChart = null; }
+
+  ge('empty2').style.display = 'none';
+  ge('results').style.display = 'block';
+
+  ge('results').innerHTML = `
+    <div id="spotBox" style="margin-bottom:10px;"></div>
+
+    <div class="tl">
+      <div class="tls" style="background:#fff8e1"><div class="tlnum" style="color:#8a6000">Wk 1–4</div><div class="tlsub">Ramp</div></div>
+      <div class="tlsep"></div>
+      <div class="tls" style="background:#e8f0fe"><div class="tlnum" style="color:#1a56db">Month 2</div><div class="tlsub">First outreach</div></div>
+      <div class="tlsep"></div>
+      <div class="tls" style="background:#f7f7f7"><div class="tlnum">Month ${fc}</div><div class="tlsub">First close</div></div>
+      <div class="tlsep"></div>
+      <div class="tls" style="background:${be ? '#e6f4ea' : '#f7f7f7'}">
+        <div class="tlnum" style="color:${be ? '#1D9E75' : '#888'}">${be ? 'Month ' + be : '>24 mo'}</div>
+        <div class="tlsub">Break-even</div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="hcard" style="background:#e8f0fe">
+        <div class="hlbl" style="color:#1a56db">Leads — 24 months</div>
+        <div class="hnum" style="color:#1a56db">${l24}</div>
+        <div class="hsub" style="color:#1a56db">10/month from month 2</div>
+      </div>
+      <div class="hcard" style="background:${be ? '#e6f4ea' : '#fff8e1'}">
+        <div class="hlbl" style="color:${be ? '#1D9E75' : '#8a6000'}">Break-even</div>
+        <div class="hnum" style="color:${be ? '#1D9E75' : '#8a6000'}">${be ? 'Month ' + be : '>24 mo'}</div>
+        <div class="hsub" style="color:${be ? '#1D9E75' : '#8a6000'}">${be ? 'Total invested: ' + fmt(be * FEE) : 'Adjust inputs'}</div>
+      </div>
+    </div>
+
+    <div class="warn" style="background:#fdecea;color:#c0392b;">
+      <strong>3-month minimum — ${fmt(FEE * 3)} locked in.</strong> First revenue month ${fc} · ${bCPM.toFixed(1)} new clients/month at plateau.
+    </div>
+
+    <div class="sgrid">
+      <div class="stat"><div class="sv">${fmt(ltv)}</div><div class="sl">Client LTV</div></div>
+      <div class="stat"><div class="sv">${fmt(plat)}</div><div class="sl">Plateau rev/mo</div></div>
+      <div class="stat"><div class="sv">${Math.round(n24 / (FEE * 24) * 100)}%</div><div class="sl">24mo ROI</div></div>
+      <div class="stat"><div class="sv" style="color:${pc(n6)}">${fmt(n6)}</div><div class="sl">Net 6 months</div></div>
+      <div class="stat"><div class="sv" style="color:${pc(n12)}">${fmt(n12)}</div><div class="sl">Net 12 months</div></div>
+      <div class="stat"><div class="sv" style="color:${pc(n24)}">${fmt(n24)}</div><div class="sl">Net 24 months</div></div>
+    </div>
+
+    <div class="sec-lbl">Revenue vs. costs — key milestones</div>
+    <div class="snap-grid">
+      ${snaps.map(({ m, rev, cost, net }) => {
+        const pos = net >= 0, mx = Math.max(rev, cost, 1), pct = cost > 0 ? Math.round(rev / cost * 100) : 0;
+        return `<div class="snap" style="background:${pos ? '#e6f4ea' : '#f7f7f7'};border:1px solid ${pos ? '#b2d8bc' : '#e8e8e8'}">
+          <div class="snap-mo" style="color:${pos ? '#1D9E75' : '#888'}">Month ${m}</div>
+          <div class="br"><div class="blbl"><span style="color:#aaa">Revenue</span><span style="color:#1D9E75;font-weight:700">${fmt(rev)}</span></div><div class="btrack"><div class="bfill" style="width:${Math.round(rev/mx*100)}%;background:#1D9E75"></div></div></div>
+          <div class="br"><div class="blbl"><span style="color:#aaa">Fees</span><span style="color:#E24B4A;font-weight:700">${fmt(cost)}</span></div><div class="btrack"><div class="bfill" style="width:${Math.round(cost/mx*100)}%;background:#E24B4A"></div></div></div>
+          <div class="snet"><span style="color:#aaa">Net</span><span style="font-weight:700;color:${pc(net)}">${fmt(net)}</span></div>
+          <div class="spct" style="color:${pos ? '#1D9E75' : '#bbb'}">${pct}% return on fees</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="sec-lbl">Revenue vs. fees — 24 months</div>
+    <div class="chart-wrap"><canvas id="revC"></canvas></div>
+    <div class="sec-lbl">Cumulative leads delivered</div>
+    <div class="bchart-wrap"><canvas id="leadsC"></canvas></div>`;
+
+  lastPts = pts; lastFc = fc;
+  ge('fMonth').value = 3;
+  ge('mLabel').textContent = 3;
+  renderSpotlight(pts, 3, fc);
+
+  revChart = new Chart(ge('revC'), {
+    type: 'line',
+    data: {
+      labels: pts.map(p => p.m % 3 === 0 || p.m === 1 ? p.label : ''),
+      datasets: [
+        { label: 'Revenue', data: pts.map(p => p.rev), borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.07)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.35 },
+        { label: 'Fees', data: pts.map(p => p.cost), borderColor: '#E24B4A', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 4], pointRadius: 0 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmt(c.parsed.y)}` } } }, scales: { x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 9 }, color: '#aaa', autoSkip: false, maxRotation: 0 } }, y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 9 }, color: '#aaa', callback: fmtK } } } }
+  });
+  leadsChart = new Chart(ge('leadsC'), {
+    type: 'bar',
+    data: { labels: pts.map(p => p.m % 3 === 0 || p.m === 1 ? p.label : ''), datasets: [{ label: 'Leads', data: pts.map(p => p.leads), backgroundColor: '#378ADD', borderRadius: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 9 }, color: '#aaa', autoSkip: false, maxRotation: 0 } }, y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 9 }, color: '#aaa' } } } }
+  });
+
+  doSummary({ mrr, ret, conv, sc, be, fc, bCPM, n6, n12, n24, l24, ltv, plat });
+}
+
+function renderSpotlight(pts, m, fc) {
+  const p = pts[m - 1];
+  const inMin = m <= 3;
+  const phase = m === 3 ? 'End of minimum commitment' : p.net >= 0 ? 'ROI positive' : m < fc ? 'Leads flowing — awaiting closes' : 'Building pipeline';
+  const col = p.net >= 0 && m >= fc ? '#1D9E75' : inMin ? '#8a6000' : '#1a56db';
+  const bg  = p.net >= 0 && m >= fc ? '#f0faf5' : inMin ? '#fffbf0' : '#f0f4ff';
+  const box = ge('spotBox');
+  if (!box) return;
+  box.innerHTML = `<div style="border:1.5px solid ${col};border-radius:9px;padding:12px;background:${bg};">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div>
+        <div style="font-size:9px;font-weight:700;color:${col};text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">Month ${m} snapshot${inMin ? ' · 3-mo minimum' : ''}</div>
+        <div style="font-size:11px;color:#888;">${phase}</div>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:${pc(p.net)}">${fmt(p.net)}</div>
+    </div>
+    <div class="spot-grid">
+      <div class="spot-cell"><div class="spot-val" style="color:#1a56db">${p.leads}</div><div class="spot-lbl">Leads sent</div></div>
+      <div class="spot-cell"><div class="spot-val">${p.newClients}</div><div class="spot-lbl">New clients</div></div>
+      <div class="spot-cell"><div class="spot-val" style="color:#1D9E75">${fmt(p.monthRev)}</div><div class="spot-lbl">Revenue</div></div>
+      <div class="spot-cell"><div class="spot-val" style="color:#E24B4A">${fmt(FEE)}</div><div class="spot-lbl">Fee</div></div>
+    </div>
+    ${inMin && p.net < 0 ? `<div style="margin-top:8px;font-size:10px;color:${col};padding:6px 8px;background:rgba(255,255,255,0.6);border-radius:5px;">Within the 3-month minimum (${fmt(FEE*3)} total). First revenue arrives month ${fc}.</div>` : ''}
+  </div>`;
+}
+
+async function doSummary(p) {
+  ge('empty3').style.display = 'none';
+  ge('summaryBox').style.display = 'block';
+  ge('summaryBox').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-title">Key numbers</div>
+      <div class="kpi-row"><span class="kpi-label">Break-even</span><span class="kpi-val" style="color:${p.be ? '#1D9E75' : '#E24B4A'}">${p.be ? 'Month ' + p.be : '>24 months'}</span></div>
+      <div class="kpi-row"><span class="kpi-label">Client LTV</span><span class="kpi-val">${fmt(p.ltv)}</span></div>
+      <div class="kpi-row"><span class="kpi-label">Net at 12 months</span><span class="kpi-val" style="color:${pc(p.n12)}">${fmt(p.n12)}</span></div>
+      <div class="kpi-row"><span class="kpi-label">Net at 24 months</span><span class="kpi-val" style="color:${pc(p.n24)}">${fmt(p.n24)}</span></div>
+      <div class="kpi-row"><span class="kpi-label">Leads delivered</span><span class="kpi-val">${p.l24} over 24 mo</span></div>
+      <div class="kpi-row"><span class="kpi-label">Total investment</span><span class="kpi-val">${fmt(FEE * 24)}</span></div>
+    </div>
+    <div class="narr-card">
+      <div class="narr-title">AI summary</div>
+      <div class="loading-row" id="narrLoad"><div class="spinner"></div><span style="font-size:11px;color:#aaa;">Generating...</span></div>
+      <div id="narrText" class="narr-text" style="display:none;"></div>
+      <button id="regenBtn" style="display:none;margin-top:10px;background:transparent;border:none;font-size:10px;color:#ccc;cursor:pointer;" onclick="doSummary(window._sp)">Regenerate ↺</button>
+    </div>`;
+  window._sp = p;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 280,
+        system: "B2B sales consultant. Write one confident paragraph (4-5 sentences) in plain English explaining ROI to a prospect. Use 'you'/'your'. Frame $3,400/month as an investment. Be specific with numbers. No bullets or headers.",
+        messages: [{ role: 'user', content: `$3,400/mo flat · 10 outreach/mo · ${p.conv}% conv · ${p.sc}wk cycle · $${p.mrr} MRR · ${p.ret}mo retention · break-even ${p.be ? 'month ' + p.be : 'beyond 24mo'} · net 12mo ${fmt(p.n12)} · net 24mo ${fmt(p.n24)} · leads 24mo: ${p.l24} · LTV ${fmt(p.ltv)}` }]
+      })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('').trim();
+    ge('narrLoad').style.display = 'none';
+    ge('narrText').textContent = text;
+    ge('narrText').style.display = 'block';
+    ge('regenBtn').style.display = 'block';
+  } catch(e) {
+    ge('narrLoad').style.display = 'none';
+    ge('narrText').textContent = 'Error: ' + e.message;
+    ge('narrText').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
