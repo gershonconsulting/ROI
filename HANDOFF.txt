@@ -1,0 +1,92 @@
+================================================================
+HANDOFF.txt  -  ROI
+Written by: Claude (nightly run) - token-limit handoff protocol
+Date: 2026-10-27
+Reason: repo had no HANDOFF.txt. Another AI can continue this work
+        from this file alone.
+================================================================
+
+0. WHO YOU ARE READING THIS
+----------------------------------------------------------------
+You are an AI assistant (ChatGPT, Gemini, Copilot, or another Claude
+session) taking over work on this repository for Olivier Attia,
+founder / CTO of Gershon Consulting LLC.
+
+Read the MASTER HANDOFF first:
+  github.com/gershonconsulting/memory -> HANDOFF.txt
+It carries the full operating rules, the technical defaults, and the
+index of all repos.
+
+CRITICAL OPERATING RULES - do not break these:
+  * Olivier does NOT use a terminal, CLI, git or PowerShell. NEVER
+    give him commands, scripts, .bat files or 'just run this' steps.
+  * He does NOT upload, download, move or save files. If a file has
+    to get somewhere, YOU find the route and execute it.
+  * End every actionable reply with:
+      GREEN CHECK = ready for him to test (+ the link)
+      RED CROSS   = something still to do (+ exactly 3 options he can
+                    actually action - never a CLI step)
+  * Executors: Ariel = code and repo work. Charles = Chrome extension
+    and web admin panels (Cloudflare, GitHub settings, DNS, publishing).
+
+1. WHAT THIS REPO IS
+----------------------------------------------------------------
+Product / site name : ROI calculator (sales tool)
+Live URL            : https://roi.gershoncrm.com
+What it does        : Single-page ROI calculator (index.html) that calls
+                      Claude through a tiny Node proxy (proxy.js, POST
+                      /api/claude, CORS locked to roi.gershoncrm.com).
+Who uses it         : Gershon sales / prospects.
+
+2. STACK AND DEPLOY ROUTE
+----------------------------------------------------------------
+Language / framework: Static HTML + plain Node http proxy (no dependencies)
+Hosting             : Front end per Gershon default (Hostinger); proxy runs
+                      under PM2 (ecosystem.config.js, app roi-proxy, port
+                      3001) on a server not identified in the repo.
+DNS / registrar     : Tierra.net; Cloudflare for CDN/DNS/SSL
+Deploy method       : none in the repo (no workflow); manual.
+Default branch      : main
+How to ship a change: merge to main, then have Charles/Ariel upload
+                      index.html and restart the proxy.
+Secrets / env vars  : ANTHROPIC_API_KEY (proxy; value in 1Password),
+                      PORT
+
+3. RECENTLY DONE  [DONE]
+----------------------------------------------------------------
+- 2026-04-19: PM2 ecosystem config for roi-proxy added.
+
+4. PENDING  [TODO]
+----------------------------------------------------------------
+- Verify the live site and that the proxy is running.
+
+5. MISSING / NOT BUILT YET
+----------------------------------------------------------------
+- No README, no CI deploy, no rate limiting on the proxy.
+
+6. KNOWN BUGS / NEEDS FIXING
+----------------------------------------------------------------
+- ecosystem.config.js holds a placeholder ANTHROPIC_API_KEY string; set the
+  real key through the server environment, never commit it.
+- The proxy forwards any POST body to the Anthropic API with Gershon's key;
+  without rate limiting a visitor can burn credits (CORS does not stop
+  server-side callers).
+
+7. NEXT ACTION - START HERE
+----------------------------------------------------------------
+The single most valuable next step is:
+  -> Confirm roi.gershoncrm.com works end to end, then add a request cap to
+     proxy.js.
+
+8. GOTCHAS / HARD-WON LESSONS
+----------------------------------------------------------------
+- proxy.js exits at start if ANTHROPIC_API_KEY is unset.
+
+9. CONTACT / ESCALATION
+----------------------------------------------------------------
+Olivier Attia - oattia@gmail.com
+Report mailbox - report@gershonconsulting.com
+
+================================================================
+END OF HANDOFF
+================================================================
